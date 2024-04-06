@@ -17,8 +17,10 @@ class TrailListFragment : ListFragment() {
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        val trails = LocalData.getSampleTrails()
+        val trails = LocalData.readTrailsFromCSV(requireContext(),"szlaki.csv")
         listAdapter = TrailAdapter(requireContext(), trails)
+        print(trails)
+        LocalData.printTrails(trails)
 
         return view
     }

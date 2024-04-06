@@ -21,6 +21,9 @@ class TrailDetailsFragment : Fragment() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,13 +38,11 @@ class TrailDetailsFragment : Fragment() {
         nameTextView.text = trail?.name
         descriptionTextView.text = trail?.description
 
-        // Znajdź referencję do StoperFragment w layoucie TrailDetailsFragment
-        val stoperFragment = StoperFragment()
-
-        // Dodaj StoperFragment do bieżącego widoku TrailDetailsFragment
-        val transaction = childFragmentManager.beginTransaction()
-        transaction.add(R.id.stoper_container, stoperFragment)
-        transaction.commit()
+        if (savedInstanceState == null) {
+            val transaction = childFragmentManager.beginTransaction()
+            transaction.add(R.id.stoper_container, StoperFragment())
+            transaction.commit()
+        }
 
         return view
     }
