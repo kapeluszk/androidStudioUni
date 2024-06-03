@@ -2,41 +2,68 @@ package com.example.szlak
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
-import androidx.fragment.app.ListFragment
-import com.example.szlak.LocalData.getSampleTrails
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
-class TrailListFragment : ListFragment() {
+class TrailListFragment : Fragment() {
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var trailAdapter: TrailAdapter
+    private lateinit var allTrails: List<LocalData.Trail>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = super.onCreateView(inflater, container, savedInstanceState)
+        val view = inflater.inflate(R.layout.fragment_trail_list, container, false)
 
-        val trails = LocalData.readTrailsFromCSV(requireContext(),"szlaki.csv")
-        listAdapter = TrailAdapter(requireContext(), trails)
-        print(trails)
-        LocalData.printTrails(trails)
+        // Initialize RecyclerView
+        recyclerView = view.findViewById(R.id.recycler_view)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        // Load all trails by default
+        allTrails = LocalData.readTrailsFromCSV(requireContext(), "szlaki.csv")
+
+        // Initialize TrailAdapter with all trails
+//        trailAdapter = TrailAdapter(allTrails)
+//        recyclerView.adapter = trailAdapter
+
+        // Set up click listeners for CardViews as difficulty selection buttons
+        view.findViewById<View>(R.id.descriptionCardView).setOnClickListener {
+            navigateToDifficultyTrails("all")
+        }
+
+        view.findViewById<View>(R.id.easyTrailsCardView).setOnClickListener {
+            navigateToDifficultyTrails("easy")
+        }
+
+        view.findViewById<View>(R.id.hardTrailsCardView).setOnClickListener {
+            navigateToDifficultyTrails("hard")
+        }
 
         return view
     }
 
-    override fun onListItemClick(l: ListView, v: View, position: Int, id: Long) {
-        super.onListItemClick(l, v, position, id)
+    private fun navigateToDifficultyTrails(difficulty: String) {
+        // Przygotuj informacje o wybranej trudności i wszystkich szlakach
+        val bundle = Bundle().apply {
+            putString("difficulty", difficulty)
 
-        val selectedTrail = listAdapter?.getItem(position) as LocalData.Trail
-        val detailsFragment = TrailDetailsFragment.newInstance(selectedTrail)
+        }
 
-        val isTablet = resources.getBoolean(R.bool.isTablet)
-        val containerId = if (isTablet) R.id.detail_container else R.id.container
+        // Twórz nowy fragment lub aktywność w zależności od potrzeb
+        val newFragment = DifficultyTrailsFragment(difficulty).apply {
+            arguments = bundle
+        }
 
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(containerId, detailsFragment)
-            .addToBackStack(null)
-            .commit()
+        // Przełącz się na nowy widok
+        activity?.supportFragmentManager?.beginTransaction()?.apply {
+            replace(R.id.container, newFragment) // Zastąp fragment o ID fragment_container nowym fragmentem
+            addToBackStack(null) // Dodaj transakcję do stosu cofania, aby można było wrócić do poprzedniego widoku
+            commit()
+        }
     }
 }

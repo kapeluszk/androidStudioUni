@@ -6,14 +6,24 @@ import java.io.IOException
 import java.io.Serializable
 
 object LocalData {
-    data class Trail(val name: String, val description: String) : Serializable
+    data class Trail(val name: String, val description: String, val diff: String) : Serializable
 
     fun getSampleTrails(): List<Trail> {
         return listOf(
-            Trail("Szlak A", "Opis Szlaku A"),
-            Trail("Szlak B", "Opis Szlaku B"),
-            Trail("Szlak C", "Opis Szlaku C")
+            Trail("Szlak A", "Opis Szlaku A", "easy"),
+            Trail("Szlak B", "Opis Szlaku B", "easy"),
+            Trail("Szlak C", "Opis Szlaku C", "hard")
         )
+    }
+
+    fun getTrailsByDiff(list: List<Trail>, diff: String): List<Trail> {
+        val trails = mutableListOf<Trail>()
+        list.forEach {
+            if (it.diff == diff ){
+                trails.add(it)
+            }
+        }
+        return trails
     }
 
     fun readTrailsFromCSV(context: Context, fileName: String): List<Trail> {
@@ -28,7 +38,8 @@ object LocalData {
                     val trailData = line.split(",")
                     val name = trailData[0]
                     val description = trailData[1]
-                    trails.add(Trail(name, description))
+                    val diff = trailData[2]
+                    trails.add(Trail(name, description, diff))
                 }
             }
         }

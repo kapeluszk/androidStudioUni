@@ -1,25 +1,57 @@
 package com.example.szlak
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.RecyclerView
 
-class TrailAdapter(context: Context, trails: List<LocalData.Trail>) : ArrayAdapter<LocalData.Trail>(context, R.layout.item_trail, trails) {
+class TrailAdapter(private var trails: List<LocalData.Trail>) :
+    RecyclerView.Adapter<TrailAdapter.TrailViewHolder>() {
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var listItemView = convertView
-        if (listItemView == null) {
-            listItemView = LayoutInflater.from(context).inflate(R.layout.item_trail, parent, false)
+    // Interface for item click listener
+    interface OnItemClickListener {
+        fun onItemClick(trail: LocalData.Trail)
+    }
+
+    private var itemClickListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        itemClickListener = listener
+    }
+
+    // ViewHolder pattern to improve performance
+    inner class TrailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val cardView: CardView = itemView.findViewById(R.id.cardView)
+        val nameTextView: TextView = itemView.findViewById(R.id.nameTextView)
+
+        init {
+            // Setting click listener on card view
+            cardView.setOnClickListener {
+                itemClickListener?.onItemClick(trails[adapterPosition])
+            }
         }
+    }
 
-        val currentTrail = getItem(position)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrailViewHolder {
+        val itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_trail, parent, false)
+        return TrailViewHolder(itemView)
+    }
 
-        val nameTextView = listItemView!!.findViewById<TextView>(R.id.nameTextView)
-        nameTextView?.text = currentTrail?.name ?: ""
+    override fun onBindViewHolder(holder: TrailViewHolder, position: Int) {
+        val currentTrail = trails[position]
+        holder.nameTextView.text = currentTrail.name
+        // You can bind other views here if needed
+    }
 
-        return listItemView
+    override fun getItemCount(): Int {
+        return trails.size
+    }
+
+    fun setTrails(newTrails: List<LocalData.Trail>) {
+        trails = newTrails
+        notifyDataSetChanged()
     }
 }

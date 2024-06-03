@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- CardView for app description -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/descriptionCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onDescriptionCardClicked"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Opis aplikacji"
+            android:textAppearance="?android:textAppearanceMedium" />
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- CardView for easy trails -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/easyTrailsCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onEasyTrailsCardClicked"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Szlaki łatwe"
+            android:textAppearance="?android:textAppearanceMedium" />
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- CardView for hard trails -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/hardTrailsCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onHardTrailsCardClicked"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Szlaki trudne"
+            android:textAppearance="?android:textAppearanceMedium" />
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- RecyclerView for displaying trails -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:orientation="vertical" />
+
+</LinearLayout>
