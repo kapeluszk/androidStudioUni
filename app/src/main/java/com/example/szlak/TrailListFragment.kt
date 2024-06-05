@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,15 +16,21 @@ class TrailListFragment : Fragment() {
     private lateinit var trailAdapter: TrailAdapter
     private lateinit var allTrails: List<LocalData.Trail>
 
+    private var selectedDiff: String = ""
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_trail_list, container, false)
 
+
+//        val toolbar: Toolbar = view.findViewById(/* id = */ R.id.toolbar)
+//        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+
         // Initialize RecyclerView
-        recyclerView = view.findViewById(R.id.recycler_view)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+//        recyclerView = view.findViewById(R.id.recycler_view)
+//        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // Load all trails by default
         allTrails = LocalData.readTrailsFromCSV(requireContext(), "szlaki.csv")
@@ -33,31 +41,33 @@ class TrailListFragment : Fragment() {
 
         // Set up click listeners for CardViews as difficulty selection buttons
         view.findViewById<View>(R.id.descriptionCardView).setOnClickListener {
-            navigateToDifficultyTrails("all")
+            selectedDiff = "all"
+            saveDiffandNav(selectedDiff)
         }
 
         view.findViewById<View>(R.id.easyTrailsCardView).setOnClickListener {
-            navigateToDifficultyTrails("easy")
+            selectedDiff = "easy"
+            saveDiffandNav(selectedDiff)
         }
 
         view.findViewById<View>(R.id.hardTrailsCardView).setOnClickListener {
-            navigateToDifficultyTrails("hard")
+            selectedDiff = "hard"
+            saveDiffandNav(selectedDiff)
         }
 
         return view
     }
 
-    private fun navigateToDifficultyTrails(difficulty: String) {
+    private fun saveDiffandNav(difficulty: String){
+        DifficultyPreference.saveSelectedDifficulty(requireContext(),difficulty)
+        navigateToDifficultyTrails()
+    }
+
+    private fun navigateToDifficultyTrails() {
         // Przygotuj informacje o wybranej trudności i wszystkich szlakach
-        val bundle = Bundle().apply {
-            putString("difficulty", difficulty)
-
-        }
-
-        // Twórz nowy fragment lub aktywność w zależności od potrzeb
-        val newFragment = DifficultyTrailsFragment(difficulty).apply {
-            arguments = bundle
-        }
+//        val selectedDifficulty = DifficultyPreference.getSelectedDifficulty(requireContext())
+//        println(selectedDifficulty)
+        val newFragment = DifficultyTrailsFragment.newInstance()
 
         // Przełącz się na nowy widok
         activity?.supportFragmentManager?.beginTransaction()?.apply {

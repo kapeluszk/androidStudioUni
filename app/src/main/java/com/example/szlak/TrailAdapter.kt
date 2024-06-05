@@ -3,6 +3,7 @@ package com.example.szlak
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
@@ -35,11 +36,9 @@ class TrailAdapter(private var trails: List<LocalData.Trail>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrailViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_trail, parent, false)
-        return TrailViewHolder(itemView)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_trail, parent, false)
+        return TrailViewHolder(view)
     }
-
     override fun onBindViewHolder(holder: TrailViewHolder, position: Int) {
         val currentTrail = trails[position]
         holder.nameTextView.text = currentTrail.name

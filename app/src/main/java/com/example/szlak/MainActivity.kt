@@ -3,12 +3,19 @@ package com.example.szlak
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 import com.example.szlak.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var smsFAB: FloatingActionButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        smsFAB = findViewById(R.id.smsFAB)
+        smsFAB.show()
 
         if (findViewById<View>(R.id.detail_container) != null) {
             // Na tablecie
@@ -25,6 +32,7 @@ class MainActivity : AppCompatActivity() {
                     .add(R.id.container, TrailListFragment())
                     .commit()
             }
+
         }
     }
 }

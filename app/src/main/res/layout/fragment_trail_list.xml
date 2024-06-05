@@ -4,6 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/recycler_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1" />-->
+
     <!-- CardView for app description -->
     <androidx.cardview.widget.CardView
         android:id="@+id/descriptionCardView"
@@ -64,12 +70,16 @@
 
     </androidx.cardview.widget.CardView>
 
-    <!-- RecyclerView for displaying trails -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="8dp"
-        android:orientation="vertical" />
+<!--    &lt;!&ndash; RecyclerView for displaying trails &ndash;&gt;-->
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/recycler_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_margin="8dp"-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_below="@id/toolbar"/>-->
+
+
+
 
 </LinearLayout>

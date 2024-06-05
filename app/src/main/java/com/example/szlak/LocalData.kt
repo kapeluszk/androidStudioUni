@@ -1,18 +1,19 @@
 package com.example.szlak
 
 import android.content.Context
+import android.health.connect.datatypes.units.Length
 import java.io.File
 import java.io.IOException
 import java.io.Serializable
 
 object LocalData {
-    data class Trail(val name: String, val description: String, val diff: String) : Serializable
+    data class Trail(val name: String, val description: String, val diff: String, val imgID: String, val expectedLength: String) : Serializable
 
     fun getSampleTrails(): List<Trail> {
         return listOf(
-            Trail("Szlak A", "Opis Szlaku A", "easy"),
-            Trail("Szlak B", "Opis Szlaku B", "easy"),
-            Trail("Szlak C", "Opis Szlaku C", "hard")
+            Trail("Szlak A", "Opis Szlaku A", "easy", "photo1", "6 hours"),
+            Trail("Szlak B", "Opis Szlaku B", "easy", "photo1", "6 hours"),
+            Trail("Szlak C", "Opis Szlaku C", "hard", "photo1", "6 hours")
         )
     }
 
@@ -39,7 +40,9 @@ object LocalData {
                     val name = trailData[0]
                     val description = trailData[1]
                     val diff = trailData[2]
-                    trails.add(Trail(name, description, diff))
+                    val img = trailData[3]
+                    val expectedLength = trailData[4]
+                    trails.add(Trail(name, description, diff, img, expectedLength))
                 }
             }
         }

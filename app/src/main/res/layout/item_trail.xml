@@ -14,14 +14,20 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholder" /> <!-- Domyślne zdjęcie dla szlaku -->
+
+
         <TextView
             android:id="@+id/nameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="@android:color/black" />
-
-        <!-- Add other views here if needed -->
 
     </LinearLayout>
 

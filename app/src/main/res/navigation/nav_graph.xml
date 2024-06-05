@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/trailListFragment">
+
+    <fragment
+        android:id="@+id/trailListFragment"
+        android:name="com.example.szlak.TrailListFragment"
+        android:label="Trail List"
+        tools:layout="@layout/fragment_trail_list">
+        <argument
+            android:name="trail"
+            app:argType="com.example.szlak.Trail" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/difficultyTrailsFragment"
+        android:name="com.example.szlak.DifficultyTrailsFragment"
+        android:label="Difficulty Trails"
+        tools:layout="@layout/fragment_difficulty_trails">
+        <argument
+            android:name="difficulty"
+            app:argType="string" />
+        <argument
+            android:name="allTrails"
+            app:argType="com.example.szlak.LocalData.Trail[]" />
+    </fragment>
+
+
+
+</navigation>
