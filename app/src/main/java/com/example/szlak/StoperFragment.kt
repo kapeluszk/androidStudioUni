@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import java.util.Locale
 
@@ -30,6 +32,9 @@ class StoperFragment : Fragment(), View.OnClickListener {
         layout.findViewById<View>(R.id.start_button).setOnClickListener(this)
         layout.findViewById<View>(R.id.stop_button).setOnClickListener(this)
         layout.findViewById<View>(R.id.reset_button).setOnClickListener(this)
+
+
+
         return layout
     }
 

@@ -16,6 +16,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.example.szlak.R.id.descriptionTextView
 import com.example.szlak.R.id.nameTextView
@@ -45,9 +47,39 @@ class TrailDetailsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_trail_details, container, false)
         val fab : FloatingActionButton = view.findViewById(R.id.fab)
 
+        val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
+        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener {
+            activity?.onBackPressed()
+        }
+
+        val bottomToolbar = view.findViewById<Toolbar>(R.id.bottom_toolbar)
+        bottomToolbar.inflateMenu((R.menu.bottom_toolbar_menu))
+        bottomToolbar.setOnMenuItemClickListener{ item ->
+            when (item.itemId) {
+                R.id.action_trail_list ->{
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.container, TrailListFragment())
+                        .addToBackStack(null)
+                        .commit()
+                    true
+                }
+                R.id.action_stoper -> {
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.container, StoperFragment())
+                        .addToBackStack(null)
+                        .commit()
+                    true
+                }
+
+                else -> {false}
+            }
+        }
+
         val params = fab.layoutParams as ViewGroup.MarginLayoutParams
-        params.bottomMargin = 16.dpToPx() // Dodaj margines od dołu (np. 16dp)
-        params.marginEnd = 16.dpToPx() // Dodaj margines od prawej (np. 16dp)
+        params.bottomMargin = 8.dpToPx() // Dodaj margines od dołu (np. 16dp)
+        params.marginEnd = 8.dpToPx() // Dodaj margines od prawej (np. 16dp)
         fab.layoutParams = params
 
         val trail = arguments?.getSerializable("trail") as? LocalData.Trail

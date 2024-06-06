@@ -35,13 +35,37 @@ class DifficultyTrailsFragment() : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_difficulty_trails, container, false)
 
-//        val toolbar: Toolbar = view.findViewById(R.id.toolbar)
-////        toolbar.title = "Trails"
-////        toolbar.setNavigationIcon(R.drawable.ic_back) // Ustaw ikonę powrotu (upewnij się, że masz odpowiednią ikonę w drawable)
-////        toolbar.setNavigationOnClickListener {
-////            // Handle back button click
-////            findNavController().navigateUp()
-////        }
+
+        val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
+        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener {
+            activity?.onBackPressed()
+        }
+        
+        val bottomToolbar = view.findViewById<Toolbar>(R.id.bottom_toolbar)
+        bottomToolbar.inflateMenu((R.menu.bottom_toolbar_menu))
+        bottomToolbar.setOnMenuItemClickListener{ item ->
+            when (item.itemId) {
+                R.id.action_trail_list ->{
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.container, TrailListFragment())
+                        .addToBackStack(null)
+                        .commit()
+                    true
+                }
+                R.id.action_stoper -> {
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.container, StoperFragment())
+                        .addToBackStack(null)
+                        .commit()
+                    true
+                }
+
+                else -> {false}
+            }
+        }
+
 
         val difficulty = DifficultyPreference.getSelectedDifficulty(requireContext())
         // Load trails by difficulty
