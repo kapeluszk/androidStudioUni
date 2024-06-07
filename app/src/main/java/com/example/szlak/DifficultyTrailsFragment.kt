@@ -36,12 +36,6 @@ class DifficultyTrailsFragment() : Fragment() {
         val view = inflater.inflate(R.layout.fragment_difficulty_trails, container, false)
 
 
-        val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
-        (activity as AppCompatActivity).setSupportActionBar(toolbar)
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        toolbar.setNavigationOnClickListener {
-            activity?.onBackPressed()
-        }
         
         val bottomToolbar = view.findViewById<Toolbar>(R.id.bottom_toolbar)
         bottomToolbar.inflateMenu((R.menu.bottom_toolbar_menu))

@@ -27,15 +27,36 @@ class StoperFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val layout = inflater.inflate(R.layout.fragment_stoper, container, false)
-        runStopwatch(layout)
-        layout.findViewById<View>(R.id.start_button).setOnClickListener(this)
-        layout.findViewById<View>(R.id.stop_button).setOnClickListener(this)
-        layout.findViewById<View>(R.id.reset_button).setOnClickListener(this)
+        val view = inflater.inflate(R.layout.fragment_stoper, container, false)
+        runStopwatch(view)
+        view.findViewById<View>(R.id.start_button).setOnClickListener(this)
+        view.findViewById<View>(R.id.stop_button).setOnClickListener(this)
+        view.findViewById<View>(R.id.reset_button).setOnClickListener(this)
 
+        val bottomToolbar = view.findViewById<Toolbar>(R.id.bottom_toolbar)
+        bottomToolbar.inflateMenu((R.menu.bottom_toolbar_menu))
+        bottomToolbar.setOnMenuItemClickListener{ item ->
+            when (item.itemId) {
+                R.id.action_trail_list ->{
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.container, TrailListFragment())
+                        .addToBackStack(null)
+                        .commit()
+                    true
+                }
+                R.id.action_stoper -> {
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.container, StoperFragment())
+                        .addToBackStack(null)
+                        .commit()
+                    true
+                }
 
+                else -> {false}
+            }
+        }
 
-        return layout
+        return view
     }
 
     override fun onPause() {
