@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Opis aplikacji"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Aplikacja Szlak to narzędzie stworzone z myślą o miłośnikach turystyki pieszej. Oferuje szeroką gamę szlaków turystycznych o różnym stopniu trudności, dzięki czemu każdy użytkownik znajdzie coś dla siebie. Aplikacja pozwala na łatwe przeglądanie i wybieranie szlaków, a także dostarcza szczegółowych informacji na temat każdego z nich.">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textStyle="bold"
+                android:text="Funkcje aplikacji Szlak:">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="1. Przeglądanie szlaków: Aplikacja oferuje listę szlaków z możliwością filtrowania według stopnia trudności.">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="2. Szczegółowe informacje: Każdy szlak zawiera szczegółowy opis, długość oraz czas przejścia.">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="3. Stopper: Aplikacja posiada wbudowany stoper, który umożliwia śledzenie czasu przejścia trasy.">
+
+            </TextView>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Aplikacja Szlak jest idealnym towarzyszem każdej wycieczki pieszej, pomagając zaplanować trasę, śledzić postępy i odkrywać nowe, ekscytujące szlaki.">
+
+            </TextView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/bottom_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:background="?attr/colorPrimary"
+        android:theme="?attr/actionBarTheme"
+        app:popupTheme="?attr/actionBarPopupTheme" />
+
+</RelativeLayout>

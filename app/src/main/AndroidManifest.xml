@@ -18,6 +18,8 @@
         android:theme="@style/Theme.Szlak"
         tools:targetApi="31">
 
+        <service android:name=".StopwatchService" android:exported="false"/>
+
         <activity
             android:name=".SplashActivity"
             android:exported="true"

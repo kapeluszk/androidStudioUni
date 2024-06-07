@@ -52,7 +52,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"/>
 
+            <Button
+                android:id="@+id/show_in_stoper_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pokaż w stoperze" />
+
         </LinearLayout>
+
+
 
     </ScrollView>
 
