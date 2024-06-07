@@ -1,5 +1,6 @@
 package com.example.szlak
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.res.Resources
 import android.os.Build
@@ -11,6 +12,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -47,12 +49,6 @@ class TrailDetailsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_trail_details, container, false)
         val fab : FloatingActionButton = view.findViewById(R.id.fab)
 
-//        val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
-//        (activity as AppCompatActivity).setSupportActionBar(toolbar)
-//        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//        toolbar.setNavigationOnClickListener {
-//            activity?.onBackPressed()
-//        }
 
         val bottomToolbar = view.findViewById<Toolbar>(R.id.bottom_toolbar)
         bottomToolbar.inflateMenu((R.menu.bottom_toolbar_menu))
@@ -97,6 +93,18 @@ class TrailDetailsFragment : Fragment() {
             showPhoneNumberDialog(trail)
         }
 
+        val showInStoperButton: Button = view.findViewById(R.id.show_in_stoper_button)
+        showInStoperButton.setOnClickListener {
+            if (trail != null) {
+                saveExpectedTimeToPreferences(trail.expectedLength)
+            }
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.container, StoperFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
         if (savedInstanceState == null) {
 //            val transaction = childFragmentManager.beginTransaction()
 //            transaction.add(R.id.stoper_container, StoperFragment())
@@ -137,7 +145,16 @@ class TrailDetailsFragment : Fragment() {
 
         Toast.makeText(requireContext(),"SMS został wysłany na numer: $phoneNumber",Toast.LENGTH_SHORT).show()
     }
+
+    private fun saveExpectedTimeToPreferences(expectedTime: String) {
+        val sharedPreferences = requireContext().getSharedPreferences("szlak_prefs", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putString("expected_time", expectedTime)
+            apply()
+        }
+    }
 }
+
 
 fun Int.dpToPx(): Int {
     return TypedValue.applyDimension(

@@ -1,43 +1,56 @@
 package com.example.szlak
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.Handler
+import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import java.util.Locale
 
 class StoperFragment : Fragment(), View.OnClickListener {
 
-    private var seconds = 0
-    private var running = false
-    private var wasRunning = false
+    private lateinit var timeView: TextView
+    private var stopwatchService: StopwatchService? = null
+    private var bound = false
+    private val handler = Handler()
+    private lateinit var expectedTimeView: TextView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (savedInstanceState != null) {
-            seconds = savedInstanceState.getInt("seconds")
-            running = savedInstanceState.getBoolean("running")
-            wasRunning = savedInstanceState.getBoolean("wasRunning")
+    private val serviceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName, service: IBinder) {
+            val binder = service as StopwatchService.StopwatchBinder
+            stopwatchService = binder.getService()
+            bound = true
+            updateUI()
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            bound = false
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_stoper, container, false)
-        runStopwatch(view)
+        timeView = view.findViewById(R.id.time_view)
+        expectedTimeView = view.findViewById(R.id.expected_time_view)
         view.findViewById<View>(R.id.start_button).setOnClickListener(this)
         view.findViewById<View>(R.id.stop_button).setOnClickListener(this)
         view.findViewById<View>(R.id.reset_button).setOnClickListener(this)
 
+        val expectedTime = getExpectedTimeFromPreferences()
+        expectedTimeView.text = "Przewidywana długość twojej wędrówki: $expectedTime"
+
         val bottomToolbar = view.findViewById<Toolbar>(R.id.bottom_toolbar)
-        bottomToolbar.inflateMenu((R.menu.bottom_toolbar_menu))
-        bottomToolbar.setOnMenuItemClickListener{ item ->
+        bottomToolbar.inflateMenu(R.menu.bottom_toolbar_menu)
+        bottomToolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.action_trail_list ->{
+                R.id.action_trail_list -> {
                     parentFragmentManager.beginTransaction()
                         .replace(R.id.container, TrailListFragment())
                         .addToBackStack(null)
@@ -51,69 +64,51 @@ class StoperFragment : Fragment(), View.OnClickListener {
                         .commit()
                     true
                 }
-
-                else -> {false}
+                else -> false
             }
         }
-
         return view
     }
 
-    override fun onPause() {
-        super.onPause()
-        wasRunning = running
-        running = false
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (wasRunning) {
-            running = true
+    override fun onStart() {
+        super.onStart()
+        Intent(activity, StopwatchService::class.java).also { intent ->
+            activity?.startService(intent) // Ensure the service is started
+            activity?.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
         }
     }
 
-    override fun onSaveInstanceState(savedInstanceState: Bundle) {
-        savedInstanceState.putInt("seconds", seconds)
-        savedInstanceState.putBoolean("running", running)
-        savedInstanceState.putBoolean("wasRunning", wasRunning)
+    override fun onStop() {
+        super.onStop()
+        if (bound) {
+            activity?.unbindService(serviceConnection)
+            bound = false
+        }
     }
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.start_button -> onClickStart()
-            R.id.stop_button -> onClickStop()
-            R.id.reset_button -> onClickReset()
+            R.id.start_button -> stopwatchService?.start()
+            R.id.stop_button -> stopwatchService?.stop()
+            R.id.reset_button -> stopwatchService?.reset()
         }
+        updateUI()
     }
 
-    private fun onClickStart() {
-        running = true
-    }
-
-    private fun onClickStop() {
-        running = false
-    }
-
-    private fun onClickReset() {
-        running = false
-        seconds = 0
-    }
-
-    private fun runStopwatch(view: View) {
-        val timeView = view.findViewById<TextView>(R.id.time_view)
-        val handler = Handler()
+    private fun updateUI() {
         handler.post(object : Runnable {
             override fun run() {
-                val hours = seconds / 3600
-                val minutes = seconds % 3600 / 60
-                val secs = seconds % 60
-                val time = String.format(Locale.getDefault(), "%d:%02d:%02d", hours, minutes, secs)
-                timeView.text = time
-                if (running) {
-                    seconds++
+                if (bound) {
+                    timeView.text = stopwatchService?.getFormattedTime()
+                    handler.postDelayed(this, 1000)
                 }
-                handler.postDelayed(this, 1000)
             }
         })
     }
+
+    private fun getExpectedTimeFromPreferences(): String? {
+        val sharedPreferences = requireContext().getSharedPreferences("szlak_prefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("expected_time", "Brak danych")
+    }
+
 }

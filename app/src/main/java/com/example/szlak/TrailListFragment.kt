@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -67,8 +68,7 @@ class TrailListFragment : Fragment() {
 
         // Set up click listeners for CardViews as difficulty selection buttons
         view.findViewById<View>(R.id.descriptionCardView).setOnClickListener {
-            selectedDiff = "all"
-            saveDiffandNav(selectedDiff)
+            navToDesc()
         }
 
         view.findViewById<View>(R.id.easyTrailsCardView).setOnClickListener {
@@ -100,6 +100,17 @@ class TrailListFragment : Fragment() {
             replace(R.id.container, newFragment) // Zastąp fragment o ID fragment_container nowym fragmentem
             addToBackStack(null) // Dodaj transakcję do stosu cofania, aby można było wrócić do poprzedniego widoku
             commit()
+        }
+    }
+
+    private fun navToDesc(){
+
+        val newFragment = DescriptionFragment()
+
+            activity?.supportFragmentManager?.beginTransaction()?.apply {
+            replace(R.id.container, newFragment)
+                addToBackStack(null)
+                commit()
         }
     }
 }
