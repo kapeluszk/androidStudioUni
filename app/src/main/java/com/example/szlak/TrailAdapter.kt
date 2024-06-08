@@ -4,9 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 
 class TrailAdapter(private var trails: List<LocalData.Trail>) :
     RecyclerView.Adapter<TrailAdapter.TrailViewHolder>() {
@@ -26,6 +28,7 @@ class TrailAdapter(private var trails: List<LocalData.Trail>) :
     inner class TrailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cardView: CardView = itemView.findViewById(R.id.cardView)
         val nameTextView: TextView = itemView.findViewById(R.id.nameTextView)
+        val imageSrc: ImageView = itemView.findViewById(R.id.imageView)
 
         init {
             // Setting click listener on card view
@@ -42,6 +45,7 @@ class TrailAdapter(private var trails: List<LocalData.Trail>) :
     override fun onBindViewHolder(holder: TrailViewHolder, position: Int) {
         val currentTrail = trails[position]
         holder.nameTextView.text = currentTrail.name
+        loadImageFromUrl(currentTrail.image, holder.imageSrc)
         // You can bind other views here if needed
     }
 
@@ -52,5 +56,8 @@ class TrailAdapter(private var trails: List<LocalData.Trail>) :
     fun setTrails(newTrails: List<LocalData.Trail>) {
         trails = newTrails
         notifyDataSetChanged()
+    }
+    fun loadImageFromUrl(imageUrl: String, imageView: ImageView) {
+        Picasso.get().load(imageUrl).into(imageView)
     }
 }

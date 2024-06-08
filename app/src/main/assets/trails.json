@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Szlak Górski",
+    "description": "Piękny szlak prowadzący przez malownicze góry. Podczas wędrówki możesz podziwiać majestatyczne widoki i odetchnąć świeżym powietrzem.",
+    "difficulty": "easy",
+    "image": "https://globtroper.pl/wp-content/uploads/2020/03/szlaki-gorskie-w-polsce-polska-bieszczady-gory-trekking.jpeg",
+    "expectedTime": "2-3h",
+    "route": "Punkt startowy - Przełęcz - Szczyt - Punkt widokowy - Meta"
+  },
+  {
+    "name": "Szlak Leśny",
+    "description": "Spokojny szlak wśród bujnych lasów i zielonych polan. Tutaj możesz spotkać wiele dzikich zwierząt i usłyszeć śpiew ptaków.",
+    "difficulty": "easy",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpcO_uDlJ3S3YwTe-OeGpwIZ7rhXq_lIbIsg&s",
+    "expectedTime": "3-4h",
+    "route": "Parking - Jezioro - Polana - Punkt widokowy - Meta"
+  },
+  {
+    "name": "Szlak Wodospadów",
+    "description": "Ekscytujący szlak prowadzący przez liczne wodospady i strumyki. To doskonałe miejsce na chwilę relaksu i kontakt z naturą.",
+    "difficulty": "hard",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6dYfMttScVcXmodZr-ZRazN7Ji5MghXcOHg&s",
+    "expectedTime": "4-5h",
+    "route": "Punkt startowy - Wodospad 1 - Wodospad 2 - Szczyt - Meta"
+  },
+  {
+    "name": "Szlak Nadmorski",
+    "description": "Urokliwy szlak biegnący wzdłuż klifów i plaż. Idealny na relaksujący spacer i podziwianie pięknych widoków nad morzem.",
+    "difficulty": "easy",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzy_SXhY3Pn5P2-B9_aXe2F1KLlAggUfJSlg&s",
+    "expectedTime": "2-3h",
+    "route": "Latarnia morska - Plaża - Klify - Punkt widokowy - Meta"
+  },
+  {
+    "name": "Szlak Bagien",
+    "description": "Tajemniczy szlak prowadzący przez mokradła i bagienne tereny. Doskonały dla miłośników przyrody i obserwacji ptaków.",
+    "difficulty": "hard",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdfxzCuCjL_eEb3nvgSb5JO8B_pFl1cxDV0w&s",
+    "expectedTime": "3-4h",
+    "route": "Punkt startowy - Bagno 1 - Bagno 2 - Mostek - Meta"
+  },
+  {
+    "name": "Szlak Rzeczny",
+    "description": "Przyjemny spacer wzdłuż brzegu rzeki, z możliwością zobaczenia dzikiej fauny i flory. Doskonały na rodzinne wycieczki.",
+    "difficulty": "easy",
+    "image": "https://samorzad.gov.pl/photo/format/d8f9f963-03b4-48ba-a80d-4b6a947e7328/resolution/1920x810",
+    "expectedTime": "2-3h",
+    "route": "Parking - Most - Łąka - Punkt widokowy - Meta"
+  }
+]

@@ -47,6 +47,19 @@
                 android:layout_marginTop="8dp"/>
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="Trasa: "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/pathTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
                 android:id="@+id/lengthTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

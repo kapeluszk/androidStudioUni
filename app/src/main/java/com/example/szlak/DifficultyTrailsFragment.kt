@@ -2,15 +2,11 @@ package com.example.szlak
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 
 class DifficultyTrailsFragment() : Fragment() {
@@ -63,8 +59,8 @@ class DifficultyTrailsFragment() : Fragment() {
 
         val difficulty = DifficultyPreference.getSelectedDifficulty(requireContext())
         // Load trails by difficulty
-        allTrails = LocalData.readTrailsFromCSV(requireContext(), "szlaki.csv")
-        trails = LocalData.getTrailsByDiff(allTrails, difficulty ?: "all")
+        allTrails = LocalData.readTrailsFromJSON(requireContext(), "trails.json")
+        trails = LocalData.getTrailsByDifficulty(allTrails, difficulty ?: "all")
 
 
         // Initialize RecyclerView

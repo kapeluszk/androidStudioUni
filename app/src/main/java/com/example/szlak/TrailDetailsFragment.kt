@@ -2,7 +2,9 @@ package com.example.szlak
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.res.Resources
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Phone
@@ -24,6 +26,7 @@ import androidx.fragment.app.Fragment
 import com.example.szlak.R.id.descriptionTextView
 import com.example.szlak.R.id.nameTextView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.squareup.picasso.Picasso
 
 class TrailDetailsFragment : Fragment() {
 
@@ -31,14 +34,13 @@ class TrailDetailsFragment : Fragment() {
 
     companion object {
         fun newInstance(trail: LocalData.Trail): TrailDetailsFragment {
-            val fragment = TrailDetailsFragment()
-            val args = Bundle()
-            args.putSerializable("trail", trail)
-            fragment.arguments = args
-            return fragment
+            return TrailDetailsFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable("trail", trail)
+                }
+            }
         }
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -84,19 +86,26 @@ class TrailDetailsFragment : Fragment() {
         val descriptionTextView = view.findViewById<TextView>(R.id.descriptionTextView)
         val lengthTextView = view.findViewById<TextView>(R.id.lengthTextView)
         val trailImageView = view.findViewById<ImageView>(R.id.trailImageView)
+        val pathTextView = view.findViewById<TextView>(R.id.pathTextView)
 
         nameTextView.text = trail?.name
-        descriptionTextView.text = trail?.description
-        lengthTextView.text = "Expected length: ${trail?.expectedLength}"
+        descriptionTextView.text = trail?.description + "\n"
+        lengthTextView.text = "\nPrzewidywana długosc trasy: ${trail?.expectedTime}"
+        pathTextView.text = trail?.route
+        if (trail != null) {
+            loadImageFromUrl(trail.image,trailImageView)
+        }
 
         fab.setOnClickListener{
-            showPhoneNumberDialog(trail)
+            if (trail != null) {
+                smsSender(trail.name)
+            }
         }
 
         val showInStoperButton: Button = view.findViewById(R.id.show_in_stoper_button)
         showInStoperButton.setOnClickListener {
             if (trail != null) {
-                saveExpectedTimeToPreferences(trail.expectedLength)
+                saveExpectedTimeToPreferences(trail.expectedTime)
             }
 
             parentFragmentManager.beginTransaction()
@@ -114,26 +123,26 @@ class TrailDetailsFragment : Fragment() {
         return view
     }
 
-    private fun showPhoneNumberDialog(trail: LocalData.Trail?) {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Podaj numer telefonu na jaki wysłać pozdrowienia")
-
-        val input = EditText(requireContext())
-        builder.setView(input)
-
-        builder.setPositiveButton("Wyślij") { dialog: DialogInterface?, which: Int ->
-            val phoneNumber = input.text.toString()
-            sendSms(phoneNumber, trail)
-        }
-        builder.setNeutralButton("Anuluj") { dialog: DialogInterface?, which: Int ->
-            dialog?.dismiss()
-        }
-
-        builder.show()
-    }
-
-    private fun sendSms(phoneNumber: String, trail: LocalData.Trail?){
-
+//    private fun showPhoneNumberDialog(trail: LocalData.Trail?) {
+//        val builder = AlertDialog.Builder(requireContext())
+//        builder.setTitle("Podaj numer telefonu na jaki wysłać pozdrowienia")
+//
+//        val input = EditText(requireContext())
+//        builder.setView(input)
+//
+//        builder.setPositiveButton("Wyślij") { dialog: DialogInterface?, which: Int ->
+//            val phoneNumber = input.text.toString()
+//            sendSms(phoneNumber, trail)
+//        }
+//        builder.setNeutralButton("Anuluj") { dialog: DialogInterface?, which: Int ->
+//            dialog?.dismiss()
+//        }
+//
+//        builder.show()
+//    }
+//
+//    private fun sendSms(phoneNumber: String, trail: LocalData.Trail?){
+//
 //        val smsManager: SmsManager
 //        smsManager = SmsManager.getDefault()
 //        val smsBody = "Pozdrowienia ze szlaku ${trail?.name}!"
@@ -142,8 +151,15 @@ class TrailDetailsFragment : Fragment() {
 ////            sendTextMessage(phoneNumber,null,smsBody,null,null)
 ////        }
 //        smsManager.sendTextMessage(phoneNumber,null,smsBody,null,null)
+//
+//        Toast.makeText(requireContext(),"SMS został wysłany na numer: $phoneNumber",Toast.LENGTH_SHORT).show()
+//    }
 
-        Toast.makeText(requireContext(),"SMS został wysłany na numer: $phoneNumber",Toast.LENGTH_SHORT).show()
+    private fun smsSender(trailName: String){
+        val intent = Intent(Intent.ACTION_SENDTO)
+        intent.data = Uri.parse("smsto:")
+        intent.putExtra("sms_body","Pozdrowienia ze szlaku: $trailName!")
+        startActivity(intent)
     }
 
     private fun saveExpectedTimeToPreferences(expectedTime: String) {
@@ -162,4 +178,8 @@ fun Int.dpToPx(): Int {
         this.toFloat(),
         Resources.getSystem().displayMetrics
     ).toInt()
+}
+
+fun loadImageFromUrl(imageUrl: String, imageView: ImageView) {
+    Picasso.get().load(imageUrl).into(imageView)
 }

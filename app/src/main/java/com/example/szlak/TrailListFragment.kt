@@ -4,20 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.replace
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 class TrailListFragment : Fragment() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var trailAdapter: TrailAdapter
-    private lateinit var allTrails: List<LocalData.Trail>
-
-    private var selectedDiff: String = ""
+    private lateinit var viewPager: ViewPager2
+    private lateinit var tabLayout: TabLayout
+    private lateinit var trailPagerAdapter: TrailPagerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,13 +22,11 @@ class TrailListFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_trail_list, container, false)
 
-
-
         val bottomToolbar = view.findViewById<Toolbar>(R.id.bottom_toolbar)
         bottomToolbar.inflateMenu((R.menu.bottom_toolbar_menu))
-        bottomToolbar.setOnMenuItemClickListener{ item ->
+        bottomToolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.action_trail_list ->{
+                R.id.action_trail_list -> {
                     parentFragmentManager.beginTransaction()
                         .replace(R.id.container, TrailListFragment())
                         .addToBackStack(null)
@@ -45,72 +40,37 @@ class TrailListFragment : Fragment() {
                         .commit()
                     true
                 }
-
-                else -> {false}
+                else -> false
             }
         }
 
+        // Initialize ViewPager2 and TrailPagerAdapter
+        viewPager = view.findViewById(R.id.view_pager)
+        tabLayout = view.findViewById(R.id.tab_layout)
+        trailPagerAdapter = TrailPagerAdapter(requireActivity(),requireContext())
+        viewPager.adapter = trailPagerAdapter
 
+        // Connect TabLayout with ViewPager2
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = when (position) {
+                0 -> "Opis"
+                1 -> "Łatwe Szlaki"
+                2 -> "Trudne Szlaki"
+                else -> null
+            }
+        }.attach()
 
-//        val toolbar: Toolbar = view.findViewById(/* id = */ R.id.toolbar)
-//        (activity as AppCompatActivity).setSupportActionBar(toolbar)
-
-        // Initialize RecyclerView
-//        recyclerView = view.findViewById(R.id.recycler_view)
-//        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        // Load all trails by default
-        allTrails = LocalData.readTrailsFromCSV(requireContext(), "szlaki.csv")
-
-        // Initialize TrailAdapter with all trails
-//        trailAdapter = TrailAdapter(allTrails)
-//        recyclerView.adapter = trailAdapter
-
-        // Set up click listeners for CardViews as difficulty selection buttons
-        view.findViewById<View>(R.id.descriptionCardView).setOnClickListener {
-            navToDesc()
-        }
-
-        view.findViewById<View>(R.id.easyTrailsCardView).setOnClickListener {
-            selectedDiff = "easy"
-            saveDiffandNav(selectedDiff)
-        }
-
-        view.findViewById<View>(R.id.hardTrailsCardView).setOnClickListener {
-            selectedDiff = "hard"
-            saveDiffandNav(selectedDiff)
-        }
+        // Add PageChangeCallback to update global difficulty state
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                when (position) {
+                    1 -> DifficultyPreference.saveSelectedDifficulty(requireContext(), "easy")
+                    2 -> DifficultyPreference.saveSelectedDifficulty(requireContext(), "hard")
+                }
+            }
+        })
 
         return view
-    }
-
-    private fun saveDiffandNav(difficulty: String){
-        DifficultyPreference.saveSelectedDifficulty(requireContext(),difficulty)
-        navigateToDifficultyTrails()
-    }
-
-    private fun navigateToDifficultyTrails() {
-        // Przygotuj informacje o wybranej trudności i wszystkich szlakach
-//        val selectedDifficulty = DifficultyPreference.getSelectedDifficulty(requireContext())
-//        println(selectedDifficulty)
-        val newFragment = DifficultyTrailsFragment.newInstance()
-
-        // Przełącz się na nowy widok
-        activity?.supportFragmentManager?.beginTransaction()?.apply {
-            replace(R.id.container, newFragment) // Zastąp fragment o ID fragment_container nowym fragmentem
-            addToBackStack(null) // Dodaj transakcję do stosu cofania, aby można było wrócić do poprzedniego widoku
-            commit()
-        }
-    }
-
-    private fun navToDesc(){
-
-        val newFragment = DescriptionFragment()
-
-            activity?.supportFragmentManager?.beginTransaction()?.apply {
-            replace(R.id.container, newFragment)
-                addToBackStack(null)
-                commit()
-        }
     }
 }

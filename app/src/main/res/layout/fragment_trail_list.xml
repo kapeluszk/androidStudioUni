@@ -1,87 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary"
+        app:tabIndicatorColor="@android:color/white"
+        app:tabSelectedTextColor="@android:color/white"
+        app:tabTextColor="@android:color/white" />
 
-    <ScrollView
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_toolbar"
-        android:fillViewport="true">
-
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/descriptionCardView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="onDescriptionCardClicked"
-                >
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:text="Opis aplikacji"
-                    android:textAppearance="?android:textAppearanceMedium" />
-
-            </androidx.cardview.widget.CardView>
-
-            <!-- CardView for easy trails -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/easyTrailsCardView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="onEasyTrailsCardClicked"
-                >
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:text="Szlaki łatwe"
-                    android:textAppearance="?android:textAppearanceMedium" />
-
-            </androidx.cardview.widget.CardView>
-
-            <!-- CardView for hard trails -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/hardTrailsCardView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="onHardTrailsCardClicked"
-                >
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:text="Szlaki trudne"
-                    android:textAppearance="?android:textAppearanceMedium" />
-
-            </androidx.cardview.widget.CardView>
-
-        </LinearLayout>
-
-
-    </ScrollView>
+        android:layout_below="@id/tab_layout" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/bottom_toolbar"
@@ -91,9 +28,5 @@
         android:background="?attr/colorPrimary"
         android:theme="?attr/actionBarTheme"
         app:popupTheme="?attr/actionBarPopupTheme" />
-
-
-
-
 
 </RelativeLayout>
