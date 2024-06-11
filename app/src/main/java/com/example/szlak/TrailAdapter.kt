@@ -46,7 +46,6 @@ class TrailAdapter(private var trails: List<LocalData.Trail>) :
         val currentTrail = trails[position]
         holder.nameTextView.text = currentTrail.name
         loadImageFromUrl(currentTrail.image, holder.imageSrc)
-        // You can bind other views here if needed
     }
 
     override fun getItemCount(): Int {

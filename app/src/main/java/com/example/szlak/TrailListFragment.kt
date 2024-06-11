@@ -44,7 +44,7 @@ class TrailListFragment : Fragment() {
             }
         }
 
-        // Initialize ViewPager2 and TrailPagerAdapter
+
         viewPager = view.findViewById(R.id.view_pager)
         tabLayout = view.findViewById(R.id.tab_layout)
         trailPagerAdapter = TrailPagerAdapter(requireActivity(),requireContext())
@@ -60,16 +60,16 @@ class TrailListFragment : Fragment() {
             }
         }.attach()
 
-        // Add PageChangeCallback to update global difficulty state
-        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                when (position) {
-                    1 -> DifficultyPreference.saveSelectedDifficulty(requireContext(), "easy")
-                    2 -> DifficultyPreference.saveSelectedDifficulty(requireContext(), "hard")
-                }
-            }
-        })
+//        // Add PageChangeCallback to update global difficulty state
+//        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+//            override fun onPageSelected(position: Int) {
+//                super.onPageSelected(position)
+//                when (position) {
+//                    1 -> DifficultyPreference.saveSelectedDifficulty(requireContext(), "easy")
+//                    2 -> DifficultyPreference.saveSelectedDifficulty(requireContext(), "hard")
+//                }
+//            }
+//        })
 
         return view
     }

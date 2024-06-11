@@ -1,5 +1,7 @@
 package com.example.szlak
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.view.animation.Animation
@@ -13,33 +15,18 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        // Znajdź logo
         val logoImageView = findViewById<ImageView>(R.id.logoImageView)
 
-        // Załaduj animację alfa (fade in)
-        val fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in)
+        val fadeInAnimator = ObjectAnimator.ofFloat(logoImageView, "alpha", 0f, 1f)
+        fadeInAnimator.duration = 2000 // Czas trwania animacji alfa
 
-        // Załaduj animację obrotu
-        val rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate)
+        val rotateAnimator = ObjectAnimator.ofFloat(logoImageView, "rotation", 0f, 360f)
+        rotateAnimator.duration = 2000 // Czas trwania animacji obrotu
 
-        // Ustaw listener na animację alfa, aby po jej zakończeniu rozpocząć animację obrotu
-        fadeInAnimation.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation) {
-                // Nic nie robić
-            }
+        val animatorSet = AnimatorSet()
+        animatorSet.playSequentially(fadeInAnimator, rotateAnimator)
+        animatorSet.start()
 
-            override fun onAnimationEnd(animation: Animation) {
-                // Rozpocznij animację obrotu
-                logoImageView.startAnimation(rotateAnimation)
-            }
-
-            override fun onAnimationRepeat(animation: Animation) {
-                // Nic nie robić
-            }
-        })
-
-        // Rozpocznij animację alfa
-        logoImageView.startAnimation(fadeInAnimation)
 
         // Ustaw opóźnienie przed przejściem do MainActivity
         val splashScreenTimeOut = 4000L // Więcej czasu, aby uwzględnić czas obu animacji

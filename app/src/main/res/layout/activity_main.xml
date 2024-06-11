@@ -7,13 +7,13 @@
     android:orientation="horizontal"
     tools:context=".MainActivity">
 
-    <!-- Główny kontener na fragmenty -->
+
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Kontener na tablety -->
+
     <FrameLayout
         android:id="@+id/detail_container"
         android:layout_width="0dp"

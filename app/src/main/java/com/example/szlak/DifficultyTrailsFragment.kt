@@ -18,7 +18,7 @@ class DifficultyTrailsFragment() : Fragment() {
 
     companion object {
         fun newInstance(): DifficultyTrailsFragment {
-            val fragment = DifficultyTrailsFragment() // Przekazanie difficulty do konstruktora
+            val fragment = DifficultyTrailsFragment()
             val args = Bundle()
 //            args.putString("difficulty", difficulty)
             fragment.arguments = args
@@ -31,50 +31,21 @@ class DifficultyTrailsFragment() : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_difficulty_trails, container, false)
 
-
-        
-        val bottomToolbar = view.findViewById<Toolbar>(R.id.bottom_toolbar)
-        bottomToolbar.inflateMenu((R.menu.bottom_toolbar_menu))
-        bottomToolbar.setOnMenuItemClickListener{ item ->
-            when (item.itemId) {
-                R.id.action_trail_list ->{
-                    parentFragmentManager.beginTransaction()
-                        .replace(R.id.container, TrailListFragment())
-                        .addToBackStack(null)
-                        .commit()
-                    true
-                }
-                R.id.action_stoper -> {
-                    parentFragmentManager.beginTransaction()
-                        .replace(R.id.container, StoperFragment())
-                        .addToBackStack(null)
-                        .commit()
-                    true
-                }
-
-                else -> {false}
-            }
-        }
-
-
         val difficulty = DifficultyPreference.getSelectedDifficulty(requireContext())
-        // Load trails by difficulty
+
         allTrails = LocalData.readTrailsFromJSON(requireContext(), "trails.json")
         trails = LocalData.getTrailsByDifficulty(allTrails, difficulty ?: "all")
 
 
-        // Initialize RecyclerView
         recyclerView = view.findViewById(R.id.recycler_view)
         val layoutManager = GridLayoutManager(requireContext(),2)
         recyclerView.layoutManager = layoutManager
 
-        // Initialize TrailAdapter with trails for the selected difficulty
         trailAdapter = TrailAdapter(trails)
         recyclerView.adapter = trailAdapter
 
         trailAdapter.setOnItemClickListener(object : TrailAdapter.OnItemClickListener {
             override fun onItemClick(trail: LocalData.Trail) {
-                // Otwórz TrailDetailsFragment, przekazując szczegóły szlaku
                 val fragment = TrailDetailsFragment.newInstance(trail)
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)

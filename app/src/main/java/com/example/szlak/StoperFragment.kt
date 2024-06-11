@@ -73,7 +73,7 @@ class StoperFragment : Fragment(), View.OnClickListener {
     override fun onStart() {
         super.onStart()
         Intent(activity, StopwatchService::class.java).also { intent ->
-            activity?.startService(intent) // Ensure the service is started
+            activity?.startService(intent)
             activity?.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
         }
     }

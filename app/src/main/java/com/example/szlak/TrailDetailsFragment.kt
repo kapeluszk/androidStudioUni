@@ -76,8 +76,8 @@ class TrailDetailsFragment : Fragment() {
         }
 
         val params = fab.layoutParams as ViewGroup.MarginLayoutParams
-        params.bottomMargin = 8.dpToPx() // Dodaj margines od dołu (np. 16dp)
-        params.marginEnd = 8.dpToPx() // Dodaj margines od prawej (np. 16dp)
+        params.bottomMargin = 8.dpToPx()
+        params.marginEnd = 8.dpToPx()
         fab.layoutParams = params
 
         val trail = arguments?.getSerializable("trail") as? LocalData.Trail
@@ -114,46 +114,8 @@ class TrailDetailsFragment : Fragment() {
                 .commit()
         }
 
-        if (savedInstanceState == null) {
-//            val transaction = childFragmentManager.beginTransaction()
-//            transaction.add(R.id.stoper_container, StoperFragment())
-//            transaction.commit()
-        }
-
         return view
     }
-
-//    private fun showPhoneNumberDialog(trail: LocalData.Trail?) {
-//        val builder = AlertDialog.Builder(requireContext())
-//        builder.setTitle("Podaj numer telefonu na jaki wysłać pozdrowienia")
-//
-//        val input = EditText(requireContext())
-//        builder.setView(input)
-//
-//        builder.setPositiveButton("Wyślij") { dialog: DialogInterface?, which: Int ->
-//            val phoneNumber = input.text.toString()
-//            sendSms(phoneNumber, trail)
-//        }
-//        builder.setNeutralButton("Anuluj") { dialog: DialogInterface?, which: Int ->
-//            dialog?.dismiss()
-//        }
-//
-//        builder.show()
-//    }
-//
-//    private fun sendSms(phoneNumber: String, trail: LocalData.Trail?){
-//
-//        val smsManager: SmsManager
-//        smsManager = SmsManager.getDefault()
-//        val smsBody = "Pozdrowienia ze szlaku ${trail?.name}!"
-////        val smsIntent = SmsManager.getDefault().run {
-////
-////            sendTextMessage(phoneNumber,null,smsBody,null,null)
-////        }
-//        smsManager.sendTextMessage(phoneNumber,null,smsBody,null,null)
-//
-//        Toast.makeText(requireContext(),"SMS został wysłany na numer: $phoneNumber",Toast.LENGTH_SHORT).show()
-//    }
 
     private fun smsSender(trailName: String){
         val intent = Intent(Intent.ACTION_SENDTO)
